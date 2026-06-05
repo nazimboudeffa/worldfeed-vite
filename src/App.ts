@@ -25,14 +25,14 @@ import {
 } from '@/components';
 
 export class App {
-  private container: HTMLElement;
+  private readonly container: HTMLElement;
   private map: MapComponent | null = null;
   private panels: Record<string, Panel> = {};
   private newsPanels: Record<string, NewsPanel> = {};
   private allNews: NewsItem[] = [];
   private monitors: Monitor[];
-  private panelSettings: Record<string, PanelConfig>;
-  private mapLayers: MapLayers;
+  private readonly panelSettings: Record<string, PanelConfig>;
+  private readonly mapLayers: MapLayers;
 
   constructor(containerId: string) {
     const el = document.getElementById(containerId);
@@ -84,7 +84,10 @@ export class App {
           <div class="map-container" id="mapContainer"></div>
           <div class="map-resize-handle" id="mapResizeHandle"></div>
         </div>
-        <div class="panels-grid" id="panelsGrid"></div>
+        <div class="panels-divider" aria-hidden="true"></div>
+        <div class="panels-sidebar">
+          <div class="panels-grid" id="panelsGrid"></div>
+        </div>
       </div>
       <div class="modal-overlay" id="settingsModal">
         <div class="modal">
@@ -259,7 +262,7 @@ export class App {
       });
 
       if (nextSibling) {
-        grid.insertBefore(dragging, nextSibling);
+        nextSibling.before(dragging);
       } else {
         grid.appendChild(dragging);
       }
@@ -381,7 +384,11 @@ export class App {
         return;
       }
       const panel = this.panels[key];
-      panel?.toggle(config.enabled);
+      if (config.enabled) {
+        panel?.show();
+      } else {
+        panel?.hide();
+      }
     });
   }
 
