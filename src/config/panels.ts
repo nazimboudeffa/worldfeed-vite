@@ -23,7 +23,7 @@ export const DEFAULT_PANELS: Record<string, PanelConfig> = {
 export const DEFAULT_MAP_LAYERS: MapLayers = {
   conflicts: true,
   bases: true,
-  cables: true,
+  cables: false,
   hotspots: true,
   nuclear: true,
   sanctions: true,

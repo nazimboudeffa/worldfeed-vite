@@ -234,7 +234,8 @@ export class App {
   }
 
   private makeDraggable(el: HTMLElement, key: string): void {
-    el.draggable = true;
+    const canDrag = !globalThis.matchMedia('(pointer: coarse)').matches;
+    el.draggable = canDrag;
     el.dataset.panel = key;
 
     el.addEventListener('dragstart', (e) => {

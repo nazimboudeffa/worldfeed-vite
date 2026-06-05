@@ -7,7 +7,6 @@ import {
   INTEL_HOTSPOTS,
   CONFLICT_ZONES,
   MILITARY_BASES,
-  UNDERSEA_CABLES,
   NUCLEAR_FACILITIES,
   SANCTIONED_COUNTRIES,
   STRATEGIC_WATERWAYS,
@@ -182,7 +181,7 @@ export class MapComponent {
     toggles.className = 'layer-toggles';
     toggles.id = 'layerToggles';
 
-    const layers: (keyof MapLayers)[] = ['conflicts', 'bases', 'cables', 'hotspots', 'earthquakes', 'nuclear', 'sanctions'];
+    const layers: (keyof MapLayers)[] = ['conflicts', 'bases', 'hotspots', 'earthquakes', 'nuclear', 'sanctions'];
 
     layers.forEach((layer) => {
       const btn = document.createElement('button');
@@ -284,10 +283,6 @@ export class MapComponent {
 
     // Layers (show on global and mena views)
     const showGlobalLayers = this.state.view === 'global' || this.state.view === 'mena';
-    if (this.state.layers.cables && showGlobalLayers) {
-      this.renderCables(projection);
-    }
-
     if (this.state.layers.conflicts && showGlobalLayers) {
       this.renderConflicts(projection);
     }
@@ -393,23 +388,6 @@ export class MapComponent {
         .attr('stroke', '#1a8060')
         .attr('stroke-width', 0.7);
     }
-  }
-
-  private renderCables(projection: d3.GeoProjection): void {
-    const cableGroup = this.svg.append('g').attr('class', 'cables');
-
-    UNDERSEA_CABLES.forEach((cable) => {
-      const lineGenerator = d3
-        .line<[number, number]>()
-        .x((d) => projection(d)?.[0] ?? 0)
-        .y((d) => projection(d)?.[1] ?? 0)
-        .curve(d3.curveCardinal);
-
-      cableGroup
-        .append('path')
-        .attr('class', 'cable-path')
-        .attr('d', lineGenerator(cable.points));
-    });
   }
 
   private renderConflicts(projection: d3.GeoProjection): void {
