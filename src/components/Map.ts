@@ -229,8 +229,11 @@ export class MapComponent {
       'wheel',
       (e) => {
         e.preventDefault();
-        if (e.deltaY < 0) this.zoomIn();
-        else this.zoomOut();
+        const rect = this.container.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const delta = e.deltaY < 0 ? 0.3 : -0.3;
+        this.zoomAtPoint(delta, x, y);
       },
       { passive: false }
     );
@@ -737,18 +740,34 @@ export class MapComponent {
   }
 
   public zoomIn(): void {
-    this.state.zoom = Math.min(this.state.zoom + 0.5, 4);
-    this.applyTransform();
+    const x = this.container.clientWidth / 2;
+    const y = this.container.clientHeight / 2;
+    this.zoomAtPoint(0.5, x, y);
   }
 
   public zoomOut(): void {
-    this.state.zoom = Math.max(this.state.zoom - 0.5, 1);
-    this.applyTransform();
+    const x = this.container.clientWidth / 2;
+    const y = this.container.clientHeight / 2;
+    this.zoomAtPoint(-0.5, x, y);
   }
 
   public reset(): void {
     this.state.zoom = 1;
     this.state.pan = { x: 0, y: 0 };
+    this.applyTransform();
+  }
+
+  private zoomAtPoint(delta: number, pointX: number, pointY: number): void {
+    const currentZoom = this.state.zoom;
+    const nextZoom = Math.max(1, Math.min(4, currentZoom + delta));
+    if (nextZoom === currentZoom) return;
+
+    this.state.pan = {
+      x: this.state.pan.x + pointX * (1 / nextZoom - 1 / currentZoom),
+      y: this.state.pan.y + pointY * (1 / nextZoom - 1 / currentZoom),
+    };
+    this.state.zoom = nextZoom;
+
     this.applyTransform();
   }
 
