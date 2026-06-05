@@ -1,3 +1,3 @@
 # World Feed
 
-Many sources of infos centralized in one place
+Many sources of news centralized in one place. Thank to the original project worldmonitor.app
