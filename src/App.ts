@@ -72,6 +72,10 @@ export class App {
         </div>
         <div class="header-right">
           <span class="time-display" id="timeDisplay">--:--:-- UTC</span>
+          <div class="header-links" aria-label="External links">
+            <a class="header-link" href="https://github.com/nazimboudeffa" target="_blank" rel="noopener noreferrer">GITHUB</a>
+            <a class="header-link" href="https://fr.tipeee.com/nazimboudeffa" target="_blank" rel="noopener noreferrer">TIPEEE</a>
+          </div>
           <button class="settings-btn" id="settingsBtn">⚙ PANELS</button>
         </div>
       </div>
@@ -168,6 +172,10 @@ export class App {
     this.newsPanels['middleeast'] = middleeastPanel;
     this.panels['middleeast'] = middleeastPanel;
 
+    const algeriaPanel = new NewsPanel('algeria', 'Algeria');
+    this.newsPanels['algeria'] = algeriaPanel;
+    this.panels['algeria'] = algeriaPanel;
+
     const layoffsPanel = new NewsPanel('layoffs', 'Layoffs Tracker');
     this.newsPanels['layoffs'] = layoffsPanel;
     this.panels['layoffs'] = layoffsPanel;
@@ -185,7 +193,7 @@ export class App {
     this.panels['thinktanks'] = thinktanksPanel;
 
     // Add panels to grid in saved order
-    const defaultOrder = ['politics', 'middleeast', 'tech', 'ai', 'finance', 'layoffs', 'congress', 'heatmap', 'markets', 'commodities', 'crypto', 'polymarket', 'gov', 'thinktanks', 'intel', 'monitors'];
+    const defaultOrder = ['politics', 'middleeast', 'algeria', 'tech', 'ai', 'finance', 'layoffs', 'congress', 'heatmap', 'markets', 'commodities', 'crypto', 'polymarket', 'gov', 'thinktanks', 'intel', 'monitors'];
     const savedOrder = this.getSavedPanelOrder();
     // Merge saved order with default to include new panels
     let panelOrder = defaultOrder;
@@ -438,6 +446,11 @@ export class App {
     const middleeast = await fetchCategoryFeeds(FEEDS.middleeast ?? []);
     this.newsPanels['middleeast']?.renderNews(middleeast);
     this.allNews.push(...middleeast);
+
+    // Algeria
+    const algeria = await fetchCategoryFeeds(FEEDS.algeria ?? []);
+    this.newsPanels['algeria']?.renderNews(algeria);
+    this.allNews.push(...algeria);
 
     // Layoffs
     const layoffs = await fetchCategoryFeeds(FEEDS.layoffs ?? []);

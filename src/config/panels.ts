@@ -4,6 +4,7 @@ export const DEFAULT_PANELS: Record<string, PanelConfig> = {
   map: { name: 'Global Map', enabled: true, priority: 1 },
   politics: { name: 'World News', enabled: true, priority: 1 },
   middleeast: { name: 'Middle East', enabled: true, priority: 1 },
+  algeria: { name: 'Algeria', enabled: true, priority: 1 },
   tech: { name: 'Technology', enabled: true, priority: 1 },
   ai: { name: 'AI/ML', enabled: true, priority: 1 },
   finance: { name: 'Financial', enabled: true, priority: 1 },

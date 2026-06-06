@@ -13,7 +13,69 @@ export const FEEDS: Record<string, Feed[]> = {
     { name: 'Al Jazeera', url: '/rss/aljazeera/xml/rss/all.xml' },
     { name: 'Guardian ME', url: '/rss/guardian/world/middleeast/rss' },
     { name: 'CNN Middle East', url: '/rss/cnn/rss/edition_meast.rss' },
+  ],
+  algeria: [
     { name: 'El Moudjahid', url: '/rss/elmoudjahid/rss.xml' },
+    {
+      name: 'El Moudjahid (Google News)',
+      url: '/rss/googlenews/rss/search?q=site:elmoudjahid.dz&hl=fr&gl=DZ&ceid=DZ:fr',
+    },
+    {
+      name: 'APS (Algerie Presse Service)',
+      url: '/rss/googlenews/rss/search?q=site:aps.dz&hl=fr&gl=DZ&ceid=DZ:fr',
+    },
+    {
+      name: 'ENTV (TV officielle)',
+      url: '/rss/googlenews/rss/search?q=site:entv.dz&hl=fr&gl=DZ&ceid=DZ:fr',
+    },
+    {
+      name: 'Echorouk',
+      url: '/rss/googlenews/rss/search?q=site:echoroukonline.com&hl=fr&gl=DZ&ceid=DZ:fr',
+    },
+    {
+      name: 'El Watan',
+      url: '/rss/googlenews/rss/search?q=site:elwatan.com&hl=fr&gl=DZ&ceid=DZ:fr',
+    },
+    {
+      name: 'Liberte',
+      url: '/rss/googlenews/rss/search?q=site:liberte-algerie.com&hl=fr&gl=DZ&ceid=DZ:fr',
+    },
+    {
+      name: 'TSA Algerie',
+      url: '/rss/googlenews/rss/search?q=site:tsa-algerie.com&hl=fr&gl=DZ&ceid=DZ:fr',
+    },
+    {
+      name: 'Le Soir d Algerie',
+      url: '/rss/googlenews/rss/search?q=site:lesoirdalgerie.com&hl=fr&gl=DZ&ceid=DZ:fr',
+    },
+    {
+      name: 'Algerie Eco',
+      url: '/rss/googlenews/rss/search?q=site:algerie-eco.com&hl=fr&gl=DZ&ceid=DZ:fr',
+    },
+    {
+      name: 'ENTV (Arabic)',
+      url: '/rss/googlenews/rss/search?q=site:entv.dz&hl=ar&gl=DZ&ceid=DZ:ar',
+    },
+    {
+      name: 'Echorouk (Arabic)',
+      url: '/rss/googlenews/rss/search?q=site:echoroukonline.com&hl=ar&gl=DZ&ceid=DZ:ar',
+    },
+    {
+      name: 'Ennahar (Arabic)',
+      url: '/rss/googlenews/rss/search?q=site:ennaharonline.com&hl=ar&gl=DZ&ceid=DZ:ar',
+    },
+    {
+      name: 'El Khabar (Arabic)',
+      url: '/rss/googlenews/rss/search?q=site:elkhabar.com&hl=ar&gl=DZ&ceid=DZ:ar',
+    },
+    {
+      name: 'Ech Chaab (Arabic)',
+      url: '/rss/googlenews/rss/search?q=site:ech-chaab.com&hl=ar&gl=DZ&ceid=DZ:ar',
+    },
+    {
+      name: 'APS (Arabic)',
+      url: '/rss/googlenews/rss/search?q=site:aps.dz&hl=ar&gl=DZ&ceid=DZ:ar',
+    },
   ],
   tech: [
     { name: 'Hacker News', url: '/rss/hn/frontpage' },

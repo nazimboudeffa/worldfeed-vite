@@ -66,6 +66,15 @@ body {
   .header-right {
     gap: 8px;
   }
+
+  .header-links {
+    gap: 6px;
+  }
+
+  .header-link {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
 }
 
 .header-left {
@@ -132,6 +141,26 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-link {
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+}
+
+.header-link:hover {
+  color: var(--text);
+  border-color: var(--text-dim);
 }
 
 .time-display {
@@ -470,6 +499,11 @@ body {
 
   .time-display {
     font-size: 10px;
+  }
+
+  .header-link {
+    font-size: 9px;
+    padding: 2px 5px;
   }
 
   .map-section {
