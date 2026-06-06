@@ -58,7 +58,7 @@ export class App {
     this.container.innerHTML = `
       <div class="header">
         <div class="header-left">
-          <span class="logo">WORLD MONITOR</span>
+          <span class="logo">AN EYE ONE THE WORLD</span>
           <div class="status-indicator">
             <span class="status-dot"></span>
             <span>LIVE</span>
@@ -67,6 +67,7 @@ export class App {
         <div class="header-center">
           <button class="view-btn active" data-view="global">GLOBAL</button>
           <button class="view-btn" data-view="us">US</button>
+          <button class="view-btn" data-view="eu">EU</button>
           <button class="view-btn" data-view="mena">MENA</button>
         </div>
         <div class="header-right">
@@ -276,7 +277,7 @@ export class App {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.view-btn').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
-        const view = (btn as HTMLElement).dataset.view as 'global' | 'us' | 'mena';
+        const view = (btn as HTMLElement).dataset.view as 'global' | 'us' | 'eu' | 'mena';
         this.map?.setView(view);
       });
     });

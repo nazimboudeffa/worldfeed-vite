@@ -28,13 +28,33 @@ export class MapPopup {
     const content = this.renderContent(data);
     this.popup.innerHTML = content;
 
-    // Position popup
-    const maxX = this.container.clientWidth - 400;
-    const maxY = this.container.clientHeight - 300;
-    this.popup.style.left = `${Math.min(data.x + 20, maxX)}px`;
-    this.popup.style.top = `${Math.min(data.y - 20, maxY)}px`;
+    const maxPopupHeight = Math.max(260, this.container.clientHeight - 20);
+    this.popup.style.maxHeight = `${maxPopupHeight}px`;
 
+    // Append first to measure real size, then clamp position inside container.
     this.container.appendChild(this.popup);
+
+    const body = this.popup.querySelector('.popup-body') as HTMLElement | null;
+    const header = this.popup.querySelector('.popup-header') as HTMLElement | null;
+    if (body && header) {
+      const popupStyle = getComputedStyle(this.popup);
+      const borderTop = Number.parseFloat(popupStyle.borderTopWidth || '0') || 0;
+      const borderBottom = Number.parseFloat(popupStyle.borderBottomWidth || '0') || 0;
+      const availableBodyHeight = Math.max(140, maxPopupHeight - header.offsetHeight - borderTop - borderBottom);
+      const bodyHeightCap = 300;
+      body.style.maxHeight = `${Math.min(bodyHeightCap, availableBodyHeight)}px`;
+    }
+
+    const margin = 10;
+    const popupWidth = this.popup.offsetWidth;
+    const popupHeight = this.popup.offsetHeight;
+    const maxX = this.container.clientWidth - popupWidth - margin;
+    const maxY = this.container.clientHeight - popupHeight - margin;
+    const left = Math.max(margin, Math.min(data.x + 20, maxX));
+    const top = Math.max(margin, Math.min(data.y - 20, maxY));
+
+    this.popup.style.left = `${left}px`;
+    this.popup.style.top = `${top}px`;
 
     // Close button handler
     this.popup.querySelector('.popup-close')?.addEventListener('click', () => this.hide());
@@ -82,12 +102,15 @@ export class MapPopup {
     const severityLabel = conflict.intensity?.toUpperCase() || 'UNKNOWN';
 
     return `
-      <div class="popup-header conflict">
-        <span class="popup-title">${conflict.name.toUpperCase()}</span>
-        <span class="popup-badge ${severityClass}">${severityLabel}</span>
-        <button class="popup-close">×</button>
+      <div class="popup-header popup-kind-conflict">
+        <span class="popup-title popup-title-kind">CONFLICT</span>
+        <div class="popup-actions">
+          <span class="popup-badge ${severityClass}">${severityLabel}</span>
+          <button class="popup-close" type="button" title="Close popup" aria-label="Close popup">×</button>
+        </div>
       </div>
       <div class="popup-body">
+        <p class="popup-location popup-topic-title">${conflict.name.toUpperCase()}</p>
         <div class="popup-stats">
           <div class="popup-stat">
             <span class="stat-label">START DATE</span>
@@ -132,12 +155,15 @@ export class MapPopup {
     const severityLabel = (hotspot.level || 'low').toUpperCase();
 
     return `
-      <div class="popup-header hotspot">
-        <span class="popup-title">${hotspot.name.toUpperCase()}</span>
-        <span class="popup-badge ${severityClass}">${severityLabel}</span>
-        <button class="popup-close">×</button>
+      <div class="popup-header popup-kind-hotspot">
+        <span class="popup-title popup-title-kind">HOTSPOT</span>
+        <div class="popup-actions">
+          <span class="popup-badge ${severityClass}">${severityLabel}</span>
+          <button class="popup-close" type="button" title="Close popup" aria-label="Close popup">×</button>
+        </div>
       </div>
       <div class="popup-body">
+        <p class="popup-location popup-topic-title">${hotspot.name.toUpperCase()}</p>
         ${hotspot.subtext ? `<div class="popup-subtitle">${hotspot.subtext}</div>` : ''}
         ${hotspot.description ? `<p class="popup-description">${hotspot.description}</p>` : ''}
         <div class="popup-stats">
@@ -182,10 +208,12 @@ export class MapPopup {
     const timeAgo = this.getTimeAgo(earthquake.time);
 
     return `
-      <div class="popup-header earthquake">
+      <div class="popup-header popup-kind-seismic">
         <span class="popup-title magnitude">M${earthquake.magnitude.toFixed(1)}</span>
-        <span class="popup-badge ${severity}">${severityLabel}</span>
-        <button class="popup-close">×</button>
+        <div class="popup-actions">
+          <span class="popup-badge ${severity}">${severityLabel}</span>
+          <button class="popup-close" type="button" title="Close popup" aria-label="Close popup">×</button>
+        </div>
       </div>
       <div class="popup-body">
         <p class="popup-location">${earthquake.place}</p>

@@ -15,7 +15,7 @@ import {
 import { MapPopup } from './MapPopup';
 
 type TimeRange = '1h' | '6h' | '24h' | '48h' | '7d' | 'all';
-type MapView = 'global' | 'us' | 'mena';
+type MapView = 'global' | 'us' | 'eu' | 'mena';
 
 interface MapState {
   zoom: number;
@@ -231,7 +231,9 @@ export class MapComponent {
         const rect = this.container.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        const delta = e.deltaY < 0 ? 0.3 : -0.3;
+        // Use proportional wheel input for smoother zoom behavior across devices.
+        const delta = Math.max(-0.25, Math.min(0.25, -e.deltaY * 0.0012));
+        if (delta === 0) return;
         this.zoomAtPoint(delta, x, y);
       },
       { passive: false }
@@ -281,8 +283,9 @@ export class MapComponent {
     // Countries
     this.renderCountries(path);
 
-    // Layers (show on global and mena views)
-    const showGlobalLayers = this.state.view === 'global' || this.state.view === 'mena';
+    // Layers (show on global, eu and mena views)
+    const showGlobalLayers =
+      this.state.view === 'global' || this.state.view === 'eu' || this.state.view === 'mena';
     if (this.state.layers.conflicts && showGlobalLayers) {
       this.renderConflicts(projection);
     }
@@ -324,11 +327,27 @@ export class MapComponent {
   }
 
   private getProjection(width: number, height: number): d3.GeoProjection {
-    if (this.state.view === 'global' || this.state.view === 'mena') {
+    if (this.state.view === 'global') {
       return d3
         .geoEquirectangular()
         .scale(width / (2 * Math.PI))
         .center([0, 0])
+        .translate([width / 2, height / 2]);
+    }
+
+    if (this.state.view === 'eu') {
+      return d3
+        .geoMercator()
+        .center([15, 54])
+        .scale(Math.min(width, height) * 1.9)
+        .translate([width / 2, height / 2]);
+    }
+
+    if (this.state.view === 'mena') {
+      return d3
+        .geoMercator()
+        .center([35, 27])
+        .scale(Math.min(width, height) * 1.4)
         .translate([width / 2, height / 2]);
     }
 
@@ -351,7 +370,7 @@ export class MapComponent {
   }
 
   private renderCountries(path: d3.GeoPath): void {
-    if ((this.state.view === 'global' || this.state.view === 'mena') && this.worldData) {
+    if ((this.state.view === 'global' || this.state.view === 'eu' || this.state.view === 'mena') && this.worldData) {
       const countries = topojson.feature(
         this.worldData,
         this.worldData.objects.countries
@@ -443,13 +462,19 @@ export class MapComponent {
   private renderOverlays(projection: d3.GeoProjection): void {
     this.overlays.innerHTML = '';
 
-    if (this.state.view !== 'global' && this.state.view !== 'mena') return;
+    const isWorldGeopoliticalView =
+      this.state.view === 'global' || this.state.view === 'eu' || this.state.view === 'mena';
+    const isUsView = this.state.view === 'us';
+    if (!isWorldGeopoliticalView && !isUsView) return;
 
-    // Strategic waterways
-    this.renderWaterways(projection);
+    // Strategic overlays are only relevant on world/regional geopolitical views.
+    if (isWorldGeopoliticalView) {
+      // Strategic waterways
+      this.renderWaterways(projection);
 
-    // APT groups
-    this.renderAPTMarkers(projection);
+      // APT groups
+      this.renderAPTMarkers(projection);
+    }
 
     // Nuclear facilities
     if (this.state.layers.nuclear) {
@@ -473,7 +498,7 @@ export class MapComponent {
     }
 
     // Conflict zone click areas
-    if (this.state.layers.conflicts) {
+    if (this.state.layers.conflicts && isWorldGeopoliticalView) {
       CONFLICT_ZONES.forEach((zone) => {
         const centerPos = projection(zone.center as [number, number]);
         if (!centerPos) return;
@@ -701,9 +726,9 @@ export class MapComponent {
 
   public setView(view: MapView): void {
     this.state.view = view;
-    // Reset zoom when changing views for better UX
-    this.state.zoom = view === 'mena' ? 2.5 : 1;
-    this.state.pan = view === 'mena' ? { x: -180, y: 60 } : { x: 0, y: 0 };
+    // Keep transforms neutral when switching views. EU and MENA use dedicated projections.
+    this.state.zoom = 1;
+    this.state.pan = { x: 0, y: 0 };
     this.applyTransform();
     this.render();
   }
