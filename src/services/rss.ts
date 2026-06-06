@@ -17,7 +17,7 @@ function parseItemsFromRawRss(text: string, source: string): NewsItem[] {
   const out: NewsItem[] = [];
   let match: RegExpExecArray | null;
   while ((match = itemRegex.exec(text)) !== null && out.length < 10) {
-    const block = match[1];
+    const block = match[1] ?? '';
     const title = decodeXmlText(tag(block, 'title'));
     const link = decodeXmlText(tag(block, 'link'));
     const dateRaw = decodeXmlText(tag(block, 'pubDate'));
