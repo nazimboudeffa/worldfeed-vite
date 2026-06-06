@@ -13,6 +13,7 @@ export const FEEDS: Record<string, Feed[]> = {
     { name: 'Al Jazeera', url: '/rss/aljazeera/xml/rss/all.xml' },
     { name: 'Guardian ME', url: '/rss/guardian/world/middleeast/rss' },
     { name: 'CNN Middle East', url: '/rss/cnn/rss/edition_meast.rss' },
+    { name: 'El Moudjahid', url: '/rss/elmoudjahid/rss.xml' },
   ],
   tech: [
     { name: 'Hacker News', url: '/rss/hn/frontpage' },

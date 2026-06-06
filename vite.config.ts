@@ -71,6 +71,12 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/rss\/aljazeera/, ''),
       },
+      // RSS Feeds - El Moudjahid
+      '/rss/elmoudjahid': {
+        target: 'https://www.elmoudjahid.dz',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/rss\/elmoudjahid/, ''),
+      },
       // RSS Feeds - CNN
       '/rss/cnn': {
         target: 'http://rss.cnn.com',
