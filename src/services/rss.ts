@@ -72,6 +72,22 @@ export async function fetchFeed(feed: Feed): Promise<NewsItem[]> {
     const response = await fetch(feed.url);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const text = await response.text();
+
+    // Check if response is JSON (rss2json format)
+    if (text.trim().startsWith('{')) {
+      const data = JSON.parse(text);
+      if (data.status === 'ok' && data.items && data.items.length > 0) {
+        return data.items.slice(0, 5).map((item: any) => ({
+          source: feed.name,
+          title: item.title,
+          link: item.link,
+          pubDate: new Date(item.pubDate || Date.now()),
+          isAlert: ALERT_KEYWORDS.some((kw) =>
+            item.title?.toLowerCase().includes(kw)
+          ),
+        }));
+      }
+    }
     const parser = new DOMParser();
     let doc = parser.parseFromString(text, 'text/xml');
 

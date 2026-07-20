@@ -71,12 +71,6 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/rss\/aljazeera/, ''),
       },
-      // RSS Feeds - El Moudjahid
-      '/rss/elmoudjahid': {
-        target: 'https://www.elmoudjahid.dz',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/rss\/elmoudjahid/, ''),
-      },
       // RSS Feeds - CNN
       '/rss/cnn': {
         target: 'http://rss.cnn.com',
@@ -140,11 +134,14 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/rss\/techcrunch/, ''),
       },
-      // Google News RSS
+      // Google News RSS - using CORS proxy
       '/rss/googlenews': {
-        target: 'https://news.google.com',
+        target: 'https://api.rss2json.com/v1/api.json',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/rss\/googlenews/, ''),
+        rewrite: (path) => {
+          const rssUrl = path.replace(/^\/rss\/googlenews/, '');
+          return `?rss_url=${encodeURIComponent(rssUrl)}`;
+        },
       },
       // AI Company Blogs
       '/rss/openai': {

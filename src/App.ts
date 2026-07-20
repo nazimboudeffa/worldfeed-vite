@@ -18,7 +18,6 @@ import {
   MarketPanel,
   HeatmapPanel,
   CommoditiesPanel,
-  CryptoPanel,
   PredictionPanel,
   MonitorPanel,
   Panel,
@@ -67,8 +66,7 @@ export class App {
         <div class="header-center">
           <button class="view-btn active" data-view="global">GLOBAL</button>
           <button class="view-btn" data-view="us">US</button>
-          <button class="view-btn" data-view="eu">EU</button>
-          <button class="view-btn" data-view="mena">MENA</button>
+        <button class="view-btn" data-view="eu">EU</button>
         </div>
         <div class="header-right">
           <span class="time-display" id="timeDisplay">--:--:-- UTC</span>
@@ -165,16 +163,9 @@ export class App {
     this.newsPanels['intel'] = intelPanel;
     this.panels['intel'] = intelPanel;
 
-    const cryptoPanel = new CryptoPanel();
-    this.panels['crypto'] = cryptoPanel;
-
     const middleeastPanel = new NewsPanel('middleeast', 'Middle East / MENA');
     this.newsPanels['middleeast'] = middleeastPanel;
     this.panels['middleeast'] = middleeastPanel;
-
-    const algeriaPanel = new NewsPanel('algeria', 'Algeria');
-    this.newsPanels['algeria'] = algeriaPanel;
-    this.panels['algeria'] = algeriaPanel;
 
     const layoffsPanel = new NewsPanel('layoffs', 'Layoffs Tracker');
     this.newsPanels['layoffs'] = layoffsPanel;
@@ -193,7 +184,7 @@ export class App {
     this.panels['thinktanks'] = thinktanksPanel;
 
     // Add panels to grid in saved order
-    const defaultOrder = ['politics', 'middleeast', 'algeria', 'tech', 'ai', 'finance', 'layoffs', 'congress', 'heatmap', 'markets', 'commodities', 'crypto', 'polymarket', 'gov', 'thinktanks', 'intel', 'monitors'];
+    const defaultOrder = ['politics', 'middleeast', 'tech', 'ai', 'finance', 'layoffs', 'congress', 'heatmap', 'markets', 'commodities', 'gov', 'thinktanks', 'intel', 'monitors'];
     const savedOrder = this.getSavedPanelOrder();
     // Merge saved order with default to include new panels
     let panelOrder = defaultOrder;
