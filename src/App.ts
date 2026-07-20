@@ -10,7 +10,7 @@ import {
   DEFAULT_MAP_LAYERS,
   STORAGE_KEYS,
 } from '@/config';
-import { fetchCategoryFeeds, fetchMultipleStocks, fetchCrypto, fetchPredictions, fetchEarthquakes } from '@/services';
+import { fetchCategoryFeeds, fetchMultipleStocks, fetchPredictions, fetchEarthquakes } from '@/services';
 import { loadFromStorage, saveToStorage } from '@/utils';
 import {
   MapComponent,
