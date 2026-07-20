@@ -438,11 +438,6 @@ export class App {
     this.newsPanels['middleeast']?.renderNews(middleeast);
     this.allNews.push(...middleeast);
 
-    // Algeria
-    const algeria = await fetchCategoryFeeds(FEEDS.algeria ?? []);
-    this.newsPanels['algeria']?.renderNews(algeria);
-    this.allNews.push(...algeria);
-
     // Layoffs
     const layoffs = await fetchCategoryFeeds(FEEDS.layoffs ?? []);
     this.newsPanels['layoffs']?.renderNews(layoffs);
@@ -492,9 +487,6 @@ export class App {
       commodities.map((c) => ({ display: c.display, price: c.price, change: c.change }))
     );
 
-    // Crypto
-    const crypto = await fetchCrypto();
-    (this.panels['crypto'] as CryptoPanel).renderCrypto(crypto);
   }
 
   private async loadPredictions(): Promise<void> {
